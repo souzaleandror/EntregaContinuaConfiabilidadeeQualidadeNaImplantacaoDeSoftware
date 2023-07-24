@@ -194,6 +194,8 @@ Visa automatizar todo o processo do deploy e aplicar cada alteração
 O Deploy Contínuo coloca qualquer alteração em produção
 A Entrega Contínua não coloca qualquer alteração em produção, mas só por motivos de negócio
 
+#### 24/07/2023
+
 @02-Fundamentos
 
 @@01
