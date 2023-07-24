@@ -193,3 +193,121 @@ O pipeline representa o fluxo contínuo das alterações (valor) do código até
 Visa automatizar todo o processo do deploy e aplicar cada alteração
 O Deploy Contínuo coloca qualquer alteração em produção
 A Entrega Contínua não coloca qualquer alteração em produção, mas só por motivos de negócio
+
+@02-Fundamentos
+
+@@01
+Antes da Entrega Contínua
+
+Definimos a entrega contínua e definimos seu elemento mais importante: o pipeline ue garante a entrega de valor para o cliente.
+Descobriremos qual é a base para começar a implementar esta metodologia em nosso ambiente de trabalho. Quais são os princípios e fundamentos da entrega contínua?
+
+Primeiramente precisamos começar com a integração contínua, que já estudamos no curso anterior, e as regras de outro desse processo são:
+
+Build automatizado
+Testes contínuos
+Gerenciamento de configuração
+Devemos realizar builds automatizados a fim de minimizar erros no processo, além de realizar testes contínuos de escalas diferentes que sejam claros e significativos e criar ambientes fáceis de reproduzir em qualquer máquina.
+
+Antes de pensarmos em entrega contínua já teremos várias etapas anteriores que devem ser respeitados. Devemos lembrar que integração contínua não é o uso de uma ferramenta de gestão específica ou geração de relatórios, mas uma metodologia ágil que envolve alguns pressupostos, como master "deployavel".
+
+Feito isso a equipe pode tentar estender o servidor de integração em uso e criar uma pipeline, mas neste caso existem alguns princípios arquiteturais que devemos aplicar.
+
+@@02
+Princípios
+
+Definimos rapidamente a integração contínua, etapa essencial para se chegar até a entrega contínua. Mas quais são os princípios que norteiam esta prática?
+Podemos definir a entrega contínua como o ato de>
+
+Entregar software com alta qualidade e grande valor, de maneira eficiente, rápida e confiável"
+A métrica principal é o software executável que satisfaz o cliente. O deploy não deve ser algo complexo ou extraordinário, sim algo simples,fácil e de baixo risco.
+
+Vejamos os princípios básicos da entrega contínua:
+
+I. Automatize
+
+*II. Versione *
+
+III. Repita
+
+V. Defina "done"
+
+VI. Crie delivery team
+
+VII. Use melhoria contínua
+
+Automatizar também faz parte da integração contínua, como ja frisamos diversas vezes. Versionar é importante não só para o código, mas tudo que é relacionado aos ambientes e testes. É importante repetir o deploy, não devemos deixar para realizá-lo no fim de semana depois de três alterações.
+
+Devemos garantir a qualidade, se há algum temor de colocar o código em produção é porque os testes não forneceram a segurança necessária.
+
+É importante definir o "done" corretamente. Não basta ter algo comitado e testado, "done" significa "em produção". Devemos, ainda, criar uma equipe de entrega com desenvolvedores, analistas, operation e assim por diante. Uma equipe multifuncional garantirá o sucesso do projeto.
+
+Devemos utilizar a melhoria contínua, isto é, que cada etapa do pipeline tenha feedbacks rápidos sobre o estaus do software.
+
+Estes são os princípios da entrega contínua.
+
+@@03
+Pré-requisitos
+
+Das técnicas abaixo, quais representam a base da entrega contínua?
+
+Deploy contínuo
+ 
+Alternativa correta
+Testes contínuos
+ 
+Alternativa correta! É essencial ter testes de vários níveis e totalmente automatizados, que executam a cada commit.
+Alternativa correta
+Refatoração contínua
+ 
+Alternativa correta
+Integração contínua
+ 
+Alternativa correta! Lembra-se da regra de ouro: sempre deve ter um master/trunk estável e os desenvolvedores devem comitar uma vez por dia no master/trunk.
+
+@@04
+Elementos principais
+
+Na aula passada aprendemos os princípios da entrega contínua e sua definição. Neste ponto, discutiremos os elementos que compõe essa metodologia, e temos três itens principais:
+1. Cultura DevOps Ela envolve: feedback, colaboração, confiança, melhoria e aprendizagem contínua.
+
+2. Patterns São os padrões de deploy, ou releases de baixo risco. Nós ainda discutiremos esse assunto ao longo do curso, alguns padrões são blue/green, canary, feature toggle e outros.
+
+3. Arquitetura A arquitetura é uma fase importante, pois quando falamos sobre arquitetura estamos mencionando a estrutura do sistema. As decisões estruturais são as mais difíceis dentro de um projeto, é necessário que ela seja estipulada no começo do trabalho. Quando pensamos na arquitetura queremos definir testabilidade, estabilidade, desempenho e outras propriedades como deployability.
+
+Quanto melhor for a arquitetura do sistema, mais fácil será praticarmos entrega contínua. Se existem dificuldades em recriar o ambiente de produção isso influencia a testabilidade, afinal devemos criar um clone da produção para que o teste seja possível.
+
+O mesmo se dá com o deployability. Se a base de código é muito grande, sentiremos dificuldade em inserir elementos na fase de produção. Nesta fase entram as boas práticas e os serviços e uma melhor base de dados.
+
+@@5
+Responsável pela entrega
+
+Na entrega contínua, quem é responsável pela entrega do software?
+
+A equipe de operações que cuida do monitoramento do sistema
+ 
+Alternativa errada! A responsabilidade está com equipe inteira. Isso inclui pessoas de operações, mas também outros envolvidos. Todos representam um único time, o delivery time.
+Alternativa correta
+Todos os envolvidos na criação e entrega de software
+ 
+Alternativa correta! Todos os envolvidos, do analista e desenvolvedor até o DBA e operações, todos devem fazer parte da equipe de entrega, o delivery time.
+Alternativa correta
+A responsabilidade está com o líder técnico da equipe
+ 
+Alternativa correta
+O desenvolvedor que fez a alteração no código
+
+@@06
+O que aprendemos?
+
+Nesta aula, aprendemos sobre os fundamentos e princípios da Entrega Contínua:
+Vimos que a base da Entrega Contínua é a Integração Contínua
+Vimos os princípios, que são:
+Automatize
+Versione
+Repita
+Garanta a qualidade
+Defina o "done"
+Crie o delivery team
+Use melhoria contínua
+Além disso, falamos os elementos mais importantes para implementar a entrega contínua, como a cultura DevOps, Pattern de deployment e mudanças arquiteturais.
