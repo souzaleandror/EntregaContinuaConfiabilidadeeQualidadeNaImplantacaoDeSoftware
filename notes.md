@@ -311,3 +311,156 @@ Defina o "done"
 Crie o delivery team
 Use melhoria contínua
 Além disso, falamos os elementos mais importantes para implementar a entrega contínua, como a cultura DevOps, Pattern de deployment e mudanças arquiteturais.
+
+@03-Deployment Pipeline
+
+@@01
+Etapas do pipeline
+
+Nesta aula entraremos de fato no deployment pipeline. No curso anterior sobre integração contínua utilizamos a metáfora do "botão de integração" que é acionado e o código sincronizado com qualidade e sem problemas.
+Agora não queremos apenas integrar, mas mostrar a alteração para o cliente, por isso seria interessante um botão de "release". Mas para essa lógica funcionar devemos ter cuidado, devemos garantir por meio de etapas a qualidade do nosso produto.
+
+Conheceremos as etapas clássicas do deploy.
+
+1. Build
+
+O começo de tudo é a build, isto é o desenvolvedor vai construir o software.
+
+2. Testes de aceitação automatizados
+
+Depois da construção do software são executados os testes necessários. Por meio dos testes criamos relatórios sobre a qualidade do sistema. Se alguma etapa falhar ela é congelada por aqui e o artefato não é promovido.
+
+3 Homologação UAT A próxima etapa - caso tudo ocorra como o esperado - é a promoção do artefato. Este é o ambiente classico de User Acceptance Testing, ou simplesmente homologação. Nesta fase não executamos os testes mais complexos e que não podem ser automatizados.
+
+4. Produção
+
+Depois da aprovação manual, iremos para o ambiente de produção, em que o artefato será de fato produzido de maneira segura.
+
+Cada etapa citada constrói mais confiança no produto. Os testes não garantem tudo, mas diminuímos muito a probabilidade de erros. O ambiente de homologação deve ser o mais parecido possível com o de produção para garantirmos a eficiência do deploy.
+
+Nesse processo podem ter outras etapas. Abaixo teremos um exemplo um pouco mais sofisticado de pipeline, com unit tests, analysis AAT, homologação, testes de performance e produção.
+
+pipe
+
+O pipeline representa o processo de produção específico de uma equipe ou empresa, portanto não temos um padrão rígido.
+
+Temos outro exemplo de pipeline que exibe o que acontece no momento em que é detectada uma falha no software. Além das etapas clássicas, temos a equipe (chamada delivery team) e o controle de versão. '
+
+wiki
+
+O processo de pipeline se inicia a cada comit que é testado separadamente. Nesta etapa os desenvolvedores utilizam ferramentas como Slack ou Telegram para se comunicarem sobre o estado do build, e se acontece algum problema toda a equipe é responsável.
+
+https://caelum-online-public.s3.amazonaws.com/1649+-+entrega+agil/03/3_1_1_pipe.png
+
+https://caelum-online-public.s3.amazonaws.com/1649+-+entrega+agil/03/3_1_2_wiki.png
+
+@@02
+Vantagens do pipeline
+
+Quais são as vantagens de usar deployment pipeline?
+
+Entrega otimizada através de ferramentas típicas do mundo DevOps
+ 
+Alternativa correta
+Entrega versionada
+ 
+Alternativa correta
+Entrega confiável
+ 
+Alternativa correta! As etapas são testes do nosso sistema, começando com testes simples e rápidos, até chegar aos testes mais sofisticado.
+Alternativa correta
+Feedback rápido
+ 
+Alternativa correta! Cada etapa dá feedback para a equipe sobre a qualidade do software.
+
+@@03
+Frequência de builds
+
+Em que momento o pipeline começa a trabalhar?
+
+momento o pipeline começa a trabalhar?
+Alternativa correta
+A cada commit
+ 
+Alternativa correta! Para cada commit novo devemos construir e testar o software!
+Alternativa correta
+Só quando um desenvolvedor notifica o pipeline
+ 
+Alternativa correta
+Normalmente à noite, quando poucos desenvolvedores estão ativos
+ 
+Alternativa correta
+Normalmente a cada hora
+
+@@04
+Boas práticas
+
+Lembremos as etapas clássicas do pipeline: build unit test, AAT, UAT e Produção. A pipeline é a única forma de realizar o deploy, assim chegamos em um estado seguro para o ambiente de produção. Outro ponto importante é o que o pipeline deve ser ágil, isto é, o seu desempenho dever ser satisfatório na resolução de problemas.
+O build é a primeira etapa do projeto, e deve ser executado apenas uma vez, e sempre devemos utilizar o artefato inicial para evitar incompatibilidades.
+
+O build em si deveria ser independente do ambiente, ou seja, o software não deve levar configurações hardcode. Já mencionamos também que os ambientes de homologação devem ser semelhantes ao ambiente de produção.
+
+Os ambientes devem ser efêmeros, isto é, temporários. Não é uma ação sempre fácil de ser realizada em todos os projetos, mas é algo interessante, pois podemos criar cenários limpos para novos testes, afinal quando executamos um teste devemos criar um cenário para ele, e então analisar o comportamento do software.
+
+Devemos garantir que o deploy para ambientes sempre seja igual, e esse escript que dará segurança ao pipeline. Idealmente devemos sempre utilizar a mesma maneira de deploy para cada fase do projeto.
+
+Essas são algumas boas práticas da entrega contínua.
+
+@@05
+Referente aos ambientes
+
+Os ambientes da pipeline devem ser:
+
+Os ambientes da pipeline devem ser:
+Alternativa correta
+Reaproveitados
+ 
+Alternativa correta
+Containerizados
+ 
+Alternativa correta
+Temporários
+ 
+Alternativa correta! Idealmente, criamos todo o ambiente do zero, para não levar nenhuma "sujeira" de instalações e testes anteriores.
+Alternativa correta
+Iguais ou semelhantes ao ambiente de produção
+ 
+Alternativa correta! Quanto mais semelhante o ambiente, mais garantias temos que o deploy vai funcionar e os testes vão dar feedback real.
+
+@@06
+Ordem das etapas
+
+Qual é a ordem aconselhada das etapas de um pipeline de implantação?
+
+Unit Test --> Aceitação Automatizada --> Produção --> Homologação
+ 
+Alternativa correta
+Unit Test --> Aceitação Automatizada --> Homologação --> Produção
+ 
+Alternativa correta! O importante é que os testes rápidos fique à esquerda, e que cada ambiente à direita se aproxime do ambiente de produção.
+Alternativa correta
+Unit Test --> Homologação --> Aceitação Automatizada --> Produção
+ 
+Alternativa correta
+Aceitação Automatizada --> Unit Test --> Homologação --> Produção
+
+@@07
+O que aprendemos?
+
+Nesta aula, começamos a ver mais detalhes sobre o deployment pipeline. Vimos os stages (etapas) principais de um pipeline, que são:
+Build/Commit stage
+Automated Acceptance Testing Stage (Testes de aceitação)
+User Acceptance Testing Stage (Homologação)
+As etapas build e AAT são totalmente automatizadas. UAT é manual.
+
+As etapas existem pois queremos receber feedback o mais rápido possível, ou seja, executamos os testes rápidos bem no início do pipeline.
+
+Também falamos sobre algumas boas práticas na construção e execução do pipeline:
+
+O pipeline é a única forma de deploy
+O desempenho do pipeline importa, ou seja, otimize-o
+Build do artefato no início e apenas uma vez
+O build deve ser independente do ambiente
+Ambientes deve ser iguais ou muito semelhantes ao de produção
+Use ambientes efêmeros (temporários) onde puder
+O deploy deve ser executado igual para qualquer ambiente
