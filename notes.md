@@ -466,3 +466,148 @@ O build deve ser independente do ambiente
 Ambientes deve ser iguais ou muito semelhantes ao de produção
 Use ambientes efêmeros (temporários) onde puder
 O deploy deve ser executado igual para qualquer ambiente
+
+#### 26/07/2023
+
+@04-Stage de commit e teste de aceitaçã
+
+@@01
+Commit Stage
+
+Anteriormente, conhecemos as etapas do pipeline e falamos sobre boas práticas. Agora, focaremos em cada uma das etapas mais detalhadamente, começando pelo build, unit test e commit stage. Tudo que aprendemos sobre integração contínua aplica-se nesse ponto.
+Nosso objetivo é garantir que não introduzimos um bug e tudo continua funcionando. É nesta etapa em que rodamos os testes de unidade (ou commit test), buildamos e disponibilizamos o artefato, e geramos relatórios de qualidade.
+
+É ideal que esta etapa não demore mais do que 10 minutos. Quando uma pessoa altera o código-fonte e faz o commit, ela deve aguardar o resultado dessa etapa antes de seguir para outra tarefa. Não é obrigatório esperar as demais etapas do pipeline, mas é essencial aguardar o build. Por isso, é importante que ele seja executado em até 10 minutos. Portanto, o build é executado por commit na área de builds agendados.
+
+Se esse processo estiver demorando mais que 10 minutos, é interessante otimizá-lo. Podemos executá-lo em paralelo, por exemplo. Como comentamos, vamos executar os testes de unidade, buildar e disponibilizar o artefato em um repositório na nuvem, e gerar os relatórios de qualidade. Os testes e a análise de código estático podem ser realizados paralelamente.
+
+Idealmente, não devemos criar novas etapas. A pipeline deve ser curta e não ter muitas etapas. Logo, é melhor aumentá-la verticalmente, executando etapas intermediárias em paralelo.
+
+Vale lembrar que tudo estará no repositório! É importante que todos da equipe de entrega tenham acesso aos artefatos — não somente o binário (o produto), mas também os relatórios.
+
+Resumidamente, os passos clássicos dessa etapa são:
+
+testes de unidade
+build
+análise estática
+É importante que essa etapa seja rápida, pois a pessoa desenvolvedora deve aguardá-la para continuar seu trabalho. Como boas práticas, é interessante não testar a interface, evitar acessos ao banco de dados e async.
+
+O objetivo é assegurar que nenhum bug foi introduzido e as demais funcionalidades continuam funcionando. Uma boa cobertura de testes é uma boa garantia de que o projeto continua funcionando, mas não é o suficiente.
+
+Para agilizar, usa-se um repositório de artefatos como cache, caso o processo esteja ultrapassando os 10 minutos considerados ideais. O desempenho é importante!
+
+Ademais, toda a equipe é responsável e deve ter acesso aos artefatos produzidos — tanto o binário quanto os relatórios. Quando um build quebra, toda a equipe precisa verificar o que está acontecendo. É preciso um código estável, não basta apenas regra de integração contínua.
+
+Todos os scripts devem ser mantidos dentro do controle de versão, incluindo ambientes, configurações, migração, schemas, testes, entre outros. Eles devem evoluir junto do projeto para chegarmos à entrega contínua.
+
+Também é preciso manter os ambientes dos devs atualizados. Tudo deve estar no sistema de controle de versão, porque precisamos ter consciência de que o ambiente usado para rodar os testes é diferente do ambiente do desenvolvedor.
+
+Passamos rapidamente por esse assunto porque se trata de integração contínua e temos cursos específicos sobre organização do repositório, ferramentas de build, testes e assim em diante. Caso você queira se aprofundar nesse assunto, você pode buscar na plataforma da Alura.
+
+No próximo vídeo, estudaremos os testes de aceitação automatizados.
+
+@@2
+Sobre o Commit Stage
+PRÓXIMA ATIVIDADE
+
+O que é executado no Commit Stage?
+
+Testes unitários
+ 
+Alternativa correta! Logo após o build, devemos executar os testes de unidade, pois são os mais rápidos (feedback!).
+Alternativa correta
+Análise de qualidade de código
+ 
+Alternativa correta! Os relatórios de qualidade são gerados nessa etapa. Podem ser executados em paralelo aos testes de unidade.
+Alternativa correta
+Teste de integração
+ 
+Alternativa correta
+Build
+ 
+Alternativa correta! O primeiro passo é buildar a aplicação.
+
+@@03
+Resultado do Commit Stage
+PRÓXIMA ATIVIDADE
+
+Assumindo que o build e os testes passaram, qual é o resultado do commit stage?
+
+Plano de teste
+ 
+Alternativa correta! Um plano de teste é relacionado com a equipe de Quality Assurance (QA) e não é um resultado do pipeline.
+Alternativa correta
+Relatórios de qualidade
+ 
+Alternativa correta! O pipeline (servidor de construção) deve publicar os relatórios da análise de código junto com os testes de unidade.
+Alternativa correta
+Pipeline como script
+ 
+Alternativa correta
+Um artefato de build
+ 
+Alternativa correta! Isso pode ser um JAR, DLL, imagem Docker, GEM ou ZIP, dependendo da sua plataforma.
+
+@@04
+Stage de testes de aceitação
+
+Continuaremos nosso curso de entrega contínua, e lembraremos que nosso foco é o pipeline de deploy. Neste vídeo estudaremos a etapa de testes de aceitação automatizados. Nesta fase queremos testar a aplicação inteira e avaliar se ela preenche os requisitos de negócio. Esta é uma etapa essencial para chegar ao deploy contínuo e inserir a aplicação na fase de produção de maneira segura.
+Diferente dos testes de unidade, esse tipo de teste garante que as funcionalidades em conjunto estejam plenamente operantes e atenderão o requisito do cliente. Tais testes são caros e trabalhosos, portanto é fácil de pular esta etapa devido ao seu custo e dificuldade.
+
+Vamos utilizar um exemplo concreto: imagine que façamos uma refatoração na base do código e vários pontos são modificados. Neste momento, vários testes irão quebrar, por isso que a base de testes também deve ser atualizada, e neste momento como podemos garantir que um novo bug não foi criado?
+
+Os testes de aceitação acessam a interface do software, como seria a experiência de usuário, e a ferramenta clássica para esta etapa é o Selenium. O teste de aceitação fornece uma garantia maior do ponto de vista do usuário.
+
+Neste teste, a primeira fase é nosso artefato estar disponibilizado em um repositório, e caso tudo tenha ocorrido certo, o pipeline é notificado e sistemas como Jenkins fazem o papel necessário nesta fase.
+
+O ambiente precisa ser todo configurado, e ele precisa ser similar ao ambiente de produção. Esta etapa é fundamental, porque se não ocorrem erros aqui a chance de algum imprevisto se dar na etapa de produção é muito reduzida.
+
+Antes de executarmos todos os testes - já que são demorados - faremos o que é conhecido como smoke tests, testes menores que garantirão que as partes fundamentais da aplicação estão operantes.
+
+O resultado dessa operação é um relatório que notificará a equipe do status da aplicação. Esta é uma etapa muito importante, afinal é a última fase dos testes automatizados, em seguida teremos uma maior presença humana.
+
+Em resumo:
+
+esquipe define as especificações (analistas,qa,dev)
+responsabilidade a equipe
+smoke tests para o ambiente
+mock de sistemas externos
+bons requisitos
+boas práticas no design e implementação de testes
+desempenho não é o mais importante
+A responsabilidade da definição do teste é dividida entre toda equipe, assim como a correção de erros. Para garantir que o ambiente está adequado, devemos realizar um conjunto de pequenos testes dos recursos principais. Precisamos de bons requisitos para escrever as especificações e o teste na aplicação final real. Testes de aceitação são caros de escrever e manter, por isso desde o início devemos utilizar boas práticas no momento de criá-los. O desempenho importa, claro, mas não é o mais importante, geralmente são lentos.
+
+@@05
+Sobre testes de aceitação
+PRÓXIMA ATIVIDADE
+
+O que é verdade sobre o stage de testes de aceitação automatizada?
+
+Essa etapa é iniciado quando o commit stage foi executado com sucesso.
+ 
+Alternativa correta! Quando executamos a primeira etapa com sucesso, automaticamente é chamado a etapa dos testes de aceitação automatizados.
+Alternativa correta
+O ambiente pode ser totalmente diferente do ambiente de produção.
+ 
+Alternativa correta
+Precisa de aprovação humana, normalmente alguém da equipe QA.
+ 
+Alternativa correta
+Nessa etapa é testado o sistema todo.
+ 
+Alternativa correta! São testes baseados em requisitos, de alto nível (black box tests) e por isso muito valiosos.
+
+@@06
+O que aprendemos?
+PRÓXIMA ATIVIDADE
+
+Nesta aula, definimos as etapas/stages de commit e de testes de aceitação automatizados (AAT):
+Ambas as etapas executam os testes de maneira automatizada
+O stage de commit foca nos testes de unidade e integração.
+O stage AAT foca nos testes funcionais, que testam o sistema todo, baseado em um requisito
+O commit stage deve executar rápido (menos de 10 minutos) e iniciar a cada commit
+O stage AAT inicia quando commit stage foi executado com sucesso
+O stage AAT é mais demorado
+Os testes de aceitação são mais caros de escrever e manter, mas trazem muito valor, pois testam o sistema todo. Os testes de aceitação são escritos pela equipe inteira (analista, desenvolvedor, etc).
+
+Quando um build quebra, todos são responsáveis. Consertar o problema é prioridade da equipe.
