@@ -508,7 +508,6 @@ No próximo vídeo, estudaremos os testes de aceitação automatizados.
 
 @@2
 Sobre o Commit Stage
-PRÓXIMA ATIVIDADE
 
 O que é executado no Commit Stage?
 
@@ -529,7 +528,6 @@ Alternativa correta! O primeiro passo é buildar a aplicação.
 
 @@03
 Resultado do Commit Stage
-PRÓXIMA ATIVIDADE
 
 Assumindo que o build e os testes passaram, qual é o resultado do commit stage?
 
@@ -579,7 +577,6 @@ A responsabilidade da definição do teste é dividida entre toda equipe, assim 
 
 @@05
 Sobre testes de aceitação
-PRÓXIMA ATIVIDADE
 
 O que é verdade sobre o stage de testes de aceitação automatizada?
 
@@ -599,7 +596,6 @@ Alternativa correta! São testes baseados em requisitos, de alto nível (black b
 
 @@06
 O que aprendemos?
-PRÓXIMA ATIVIDADE
 
 Nesta aula, definimos as etapas/stages de commit e de testes de aceitação automatizados (AAT):
 Ambas as etapas executam os testes de maneira automatizada
@@ -611,3 +607,90 @@ O stage AAT é mais demorado
 Os testes de aceitação são mais caros de escrever e manter, mas trazem muito valor, pois testam o sistema todo. Os testes de aceitação são escritos pela equipe inteira (analista, desenvolvedor, etc).
 
 Quando um build quebra, todos são responsáveis. Consertar o problema é prioridade da equipe.
+
+@05-Stage de Homologação
+
+@@01
+Stage de homologação
+
+Seguiremos com nosso curso de entrega contínua, e nesta aula abordaremos a terceira fase do pipeline: homologação. A questão principal é de como podemos garantir o pleno funcionamento da aplicação de acordo com a expectativa do cliente.
+Nesta fase os testes são executados pelo cliente, isto é, um usuário real do produto utiliza a interface do software, por isso essa etapa também é conhecida como "teste de aceitação".
+
+A etapa de homologação não é tão precisa, não existe sempre uma completa aceitação ou rejeição por parte do usuário, mas pontos que precisam ser melhorados ou mantidos dentro do sistema.
+
+Como existem várias pessoas envolvidas no projeto, cada uma terá uma visão diferente de negócio, e então com os feedbacks pequenas - ou grandes - mudanças serão requeridas.
+
+Devemos lembrar que:
+
+"Our highest priority is to satisfy the customer through early and continuous delivery of valuable software".
+Isto é, a máxima prioridade é satisfazer o cliente ao oferecermos um produto com valor e aplicação. Em resumo, esta etapa contém:
+
+*- Testes manuais pelo cliente * O cliente consegue usar o sistema de acordo com o esperado? Realiza as ações requisitadas? Apresenta dificuldade
+
+- Validar o software
+
+- Usabilidade contínua
+
+- Equipe participativa
+
+Trata-se de um universo amplo: construção do modelo de estes, recriação do ambiente de produção e assim por diante, mas estes são os pontos principais testa etapa do pipeline.
+
+@@02
+Sobre a homologação
+
+Qual é o objetivo do ambiente de homologação?
+
+Executar testes de integração
+ 
+Alternativa correta
+Testar o deploy no ambiente igual ao de produção
+ 
+Alternativa correta! Como o ambiente de homologação é igual (ou muito parecido) com o de produção, temos mais garantias que o deploy vai funcionar.
+Alternativa correta
+Dar feedback para a equipe sobre a aceitação e usabilidade do software
+ 
+Alternativa correta! A equipe deve participar e aprender com o usuário.
+Alternativa correta
+Validar se o software atende as expectativas
+ 
+Alternativa correta! Idealmente, o usuário final testa e valida o software.
+
+@@03
+Stage de teste de carga
+
+A todo tempo falamos das quatro etapas do pipeline de deploy e que uma boa prática é não permitir que ela cresça demais horizontalmente, isto é, devemos focar nestas 4 etapas.
+Em paralelo a homologação, podemos executar o "Capacity Testing Stage". A pergunta que queremos responder é: como garantir que o software realmente suporta a quantidade de requisições, transações e acessos de usuários?
+
+Criar esses cenários é algo complexo, existem ferramentas disponíveis e este é um conteúdo para um curso específico. O cenário de produção é algo dinâmico, pois precisamos pensar e reproduzir o comportamento dos usuários.
+
+Os testes de carga buscam descobrir qual é a real capacidade do nosso sistema, ou seja, seu baseline. Conhecendo nosso sistema, devemos estabelecer metas claras e utilizar ferramentas de monitoração para descobrir as modificações arquiteturais que são necessárias.
+
+Estes testes são mais caros devido a sua complexidade. Na fase de homologação não precisamos rodar a cada commit ou build, mas que o projeto seja monitorado desde o início. Podemos começar pelos testes de aceitação e criar um cenário, para elaborar os testes de carga ou fazer um replay dos dados de reprodução: gravamos o comportamento das requisições e realizamos um replay desses dados. Algumas ferramentas que podemos utilizar para isto são JMeter, Getling, Webbload, Apache Bench, LoadNinja.
+
+Mesmo depois de passarmos para a produção, ainda existem riscos possíveis, e este problema trabalharemos nas próximas aulas.
+
+@@04
+Como testar?
+
+Qual boa prática identificamos quando abordamos os testes de carga?
+
+Deve ter uma meta clara
+ 
+Alternativa correta! É preciso saber qual métrica que estamos avaliando e aonde queremos chegar.
+Alternativa correta
+Deve rodar em ambiente mais leve do que o de produção
+ 
+Alternativa correta
+Deve ser executado pelos desenvolvedores
+ 
+Alternativa errada! Não é preciso, pois podem ser executados por equipe de testes.
+
+@@05
+O que aprendemos?
+
+Nesta aula, falamos sobre os stages que possuem uma aprovação humana:
+Homologação (User Acceptance Testing Stage)
+Teste de carga (Capacity Testing Stage)
+O ambiente de homologação serve para o usuário final validar se o software atende aos requisitos e expectativas. A equipe deve participar nesses testes e eles representam uma oportunidade de aprender e receber feedback sobre a aceitação e usabilidade do software. Esses testes devem ser executados desde início do projeto.
+
+O ambiente para testes de carga serve para garantir que o software atende os requisitos não funcionais, como desempenho e carga. Os testes devem fazer parte do desenvolvimento do software e ser aplicados em ciclos. Aqui, é importante definir métricas claras e monitorar o sistema.
