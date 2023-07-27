@@ -694,3 +694,156 @@ Teste de carga (Capacity Testing Stage)
 O ambiente de homologação serve para o usuário final validar se o software atende aos requisitos e expectativas. A equipe deve participar nesses testes e eles representam uma oportunidade de aprender e receber feedback sobre a aceitação e usabilidade do software. Esses testes devem ser executados desde início do projeto.
 
 O ambiente para testes de carga serve para garantir que o software atende os requisitos não funcionais, como desempenho e carga. Os testes devem fazer parte do desenvolvimento do software e ser aplicados em ciclos. Aqui, é importante definir métricas claras e monitorar o sistema.
+
+#### 27/07/2023
+
+@06-Estratégias de releases
+
+@@01
+Releases de baixo risco
+
+Nesta aula conversaremos sobre a última fase do pipeline: a produção. Mesmo nesta fase, ainda pensaremos em como inserir nossa aplicação com o menor risco possível, mesmo tendo passado por diversas etapas que irão ampliar a segurança e estabilidade do sistema ao longo do processo.
+Era comum no meio dos desenvolvedores utilizar alguns "carimbos" de qualidade do software, como o Pré-Alpha, Alpha, Beta, Release Candidate e Release. Hoje em dia utilizamos o pipeline, com etapas sofisticadas com releases durante o desenvolvimento do projeto.
+
+Já aprendemos ao longo do curso que a tarefa de redução de riscos deve começar ao início do projeto, lembremos de:
+
+deploy e pipeline desde a primeira interação em ambientes similares.
+automação, one-click deploy e smoke test ambiente
+aspectos arquiteturais: testability e deployability
+Além desses pontos,temos o "The twelve-factor app", são 12 boas práticas documentadas que nos fornecerem uma referência de como a aplicação deve se comportar dentro de um ambiente de nuvem. Ainda tempos outras medidas para deixar o sistema ainda mais confiável na última fase do pipeline.
+
+Já mencionamos que os deploys devem ser realizados de maneira contínua, este é o tema do nosso curso. Devemos realizar *releases incrementais *, mesmo que a funcionalidade seja grande devemos realizar a implementação e realizar o deploy, assim chegamos mais perto do estado final do sistema.
+
+Sabemos eventualmente não podemos inserir o módulo de maneira parcial, por isso existe a técnica "Brench by Abstraction" que já discutimos no curso anterior. Criamos uma abstração dentro do código com dois caminho, em fase de desenvolvimento ele pode ser testado, embora na fase de produção ele não exista ainda.
+
+A entrega contínua faz a diferença entre o deploy e o release, e até agora utlizamos essas duas palavras como se fossem a mesma coisa, e na verdade não o são.
+
+Deploy é criar um ambiente, garantir que ele exista de maneira correta, instalar o software e configurá-lo. Já o release é a publicação de fato, o momento em que o cliente utiliza o produto.
+
+Devemos desacoplar o deploy do release, e para isso existem estratégias como:
+
+Blue/Green Deployment
+Canary Releases
+Feature Toggles (Feature Flags)
+Estudaremos mais detalhadamente cada uma dessas possibilidades adiante.
+
+@@02
+Atributos arquiteturais
+PRÓXIMA ATIVIDADE
+
+Quais atributos arquiteturais do software influenciam a entrega contínua?
+
+Usabilidade
+ 
+Alternativa correta
+Testabilidade
+ 
+Alternativa correta! Todo pipeline é relacionado com testes e o feedback deles. Um software que é difícil de testar, ou não possui testes, já não atende a integração contínua, menos ainda a entrega contínua.
+Alternativa correta
+Deployabilidade
+ 
+Alternativa correta! Esse atributo define a facilidade de implantar o software. Microsserviços, por exemplo, possuem vantagens aqui.
+Alternativa correta
+Escalabilidade
+
+@@03
+Blue-Green Deployment
+
+Anteriormente, mencionamos alguns princípios para deploys de baixo risco. Para garantir a segurança do nosso deploy, devemos aplicar algumas estratégias de release.
+Temos duas questões principais:
+
+Como evitar que a aplicação fique offline durante o deploy (zero downtime)?
+Como voltar para a versão anterior (rollback) em caso de erro?
+Começaremos por conhecer o Blue/Green Deployment. Tecnicamente, o deploy já foi realizado, mas temos duas versões: uma antiga(azul) e a nova(verde) que já está em ambiente de produção.
+
+Entre as versões há um roteador, então em algum momento podemos modificar o fluxo para o novo ambiente, a nova versão. O ambiente velho (blue) fica no ar ainda um bom tempo caso algum problema surja. As conexões que existiam para o azul ficarão disponíveis até que realmente apenas a versão verde esteja totalmente funcional.
+
+@@04
+Deploy vs Release
+PRÓXIMA ATIVIDADE
+
+Por que separar o deploy do release?
+
+Para fazer A/B testing
+ 
+Alternativa correta
+Para diminuir o risco da entrega
+ 
+Alternativa correta! São duas etapas diferentes que podem dar erradas.
+Alternativa correta
+Para separar a decisão técnica (deploy) da decisão de negócio (release)
+ 
+Alternativa correta! Podemos testar o deploy sempre, mas quando o negócio definir a publicação.
+
+@@05
+Feature Toggles e Canary Release
+
+Aprendemos anteriormente sobre o Blue/Green Deployment, que oscila entre duas versões da aplicação: uma mais nova e outra mais antiga. Já o Canary Release executa ações parecidas, na verdade, podemos pensar que se trata de uma evolução.
+Neste caso, as duas versões são utilizadas ao mesmo tempo, tanto azul quanto a verde, mas a nova versão não é acessada por todos os usuários. Uma parcela dos usuários que têm acesso a nova versão serão agentes de um teste.
+
+O critério de direcionamento da nova versão em teste para alguns usuários varia, podemos usar 5% do nosso tráfego para a nova versão e monitorar o comportamento do sistema. Outro critério possível é o geográfico ou em estratégias de mercado, idade e assim por diante, isso vai variar de acordo com as necessidades do negócio e dados disponíveis sobre os usuários.
+
+Uma vez que o teste for concluído, os usuários integralmente são direcionados para a nova versão. Esse metodologia também é utilizada para A/B Test.
+
+O Canary Release é muito utilizado, e também é conhecido como "dark lauching" em tradução livre "lançamento no escuro", afinal nem todos os usuários sabem que existe um novo feature.
+
+Outra estratégia com o mesmo objetivo é o Feature Toggles, também um dark lauching, mas neste caso trata-se de uma configuração no código que disponibiliza um switch de versões.
+
+Um exemplo é quando é oferecida a consdição de "beta tester" para o usuário de alguma aplicação, caso a resposta seja positiva, alguma configuração no cadastro possibilitará o acesso à nova feature. Mas temos a mesma base de código, não são duas versões blue ou green.
+
+Esta estratégia pode ser combinada ao Canary Release: uma parcela dos usuários que será direcionado para a versão nova utilizará o Feature Toggles habilitado. Há pessoas que defendem que toda a nova funcionalidade deve ser um Feature Toggles, mas para isso ser implementado de maneira correta deve-se elaborar uma estratégia para lidar com essa proposta.
+
+@@06
+Blue-Green vs Canary
+PRÓXIMA ATIVIDADE
+
+Qual é a diferença entre Blue-Green Deploy e Canary Release?
+
+O Blue-Green sempre usa Feature Toggles, e o Canary não.
+ 
+Alternativa correta
+No Blue-Green, apenas uma parte dos usuários usa o ambiente novo. No Canary todos os usuários usam o ambiente novo.
+ 
+Alternativa correta
+No Canary, apenas uma parte dos usuários usa o novo ambiente. No Blue-Green todos os usuários usam o ambiente novo.
+ 
+Alternativa correta! No Canary Release, apenas uma parte dos usuários são direcionados para o novo ambiente. No Blue-Green todos os usuários vão ser direcionados para o ambiente novo.
+
+@@07
+Para saber mais: The Twelve-Factor App
+PRÓXIMA ATIVIDADE
+
+The Twelve-Factor App é um site (ou metodologia) que define 12 boas práticas para construir software na era de nuvem. Muitas das boas práticas discutidas no curso aparecem no Twelve-Factor, assim como gerenciamento de configuração, portabilidade entre ambientes ou implantação contínua. Vale conferir!
+The Twelve-Factor App
+
+https://12factor.net/pt_br/
+
+@@08
+O que aprendemos?
+PRÓXIMA ATIVIDADE
+
+Nesta aula, falamos sobre estratégias ou patterns de implantação. Foi importante mencionar que o deploy e o release são duas operações distintas. Ou seja, podemos fazer deploy da aplicação, mas mesmo assim ainda não publicar as novas features.
+Ter features invísiveis para o cliente também é chamado de dark launching, quando já implantamos o novo software, mas o cliente ainda não tem acesso (ou só alguns clientes).
+
+Resumindo:
+
+Vimos a diferença entre deploy (implantação) e release (publicação)
+Deploy é colocar as alterações em produção (provisionar, configurar, instalar)
+Release é deixar as alterações visíveis
+Os padrões para o release do software são:
+
+Blue-Green Deployment
+Canary Release
+Feature Toggles
+
+@@09
+Conclusão
+
+Parabéns pela finalização do curso! Aprendemos juntos ao longo das aulas o que é a entrega contínua e os problemas que essa prática busca resolver: um deploy e release com menos risco, isto é, garantir um sistema saudável, estável e com valor para o cliente de maneira ágil.
+Aprendemos sobre os testes de automação, quais os elementos principais da entrega contínua e a cultura DevOps. Este último ponto se refere à forma como a equipe é organizada e seu modo de trabalho.
+
+Aprendemos que a arquitetura também influencia a qualidade do deploy, tornando-o mais fácil ou mais difícil de ser realizado. Estudamos alguns padrões de pipeline de deployment e suas etapas principais, bem como seus objetivos e características.
+
+Na última etapa do pipeline - a produção - conhecemos algumas estratégias de deploy e release, conceitos diferentes que precisam ser separados.
+
+Muito obrigado, e continue estudando!
